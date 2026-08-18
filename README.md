@@ -45,7 +45,7 @@ The built site will be in the `_site` directory.
 
 ## Deployment
 
-The site is automatically built and deployed to GitHub Pages on push to the master branch via GitHub Actions.
+The site is automatically built and deployed to GitHub Pages on push to the `main` branch via GitHub Actions.
 
 ## Contributing
 
