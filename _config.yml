@@ -1,8 +1,0 @@
-title: "Cue2"
-description: "Welcome to Cue2.Live"
-url: "https://cue2.live"
-baseurl: ""
-
-# Build settings
-markdown: kramdown
-highlighter: rouge
