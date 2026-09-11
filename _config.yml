@@ -6,3 +6,10 @@ baseurl: ""
 # Build settings
 markdown: kramdown
 highlighter: rouge
+
+# Hardcoded latest release. Update version + tag when publishing a new GitHub release.
+# Asset filenames must stay: Cue2-<version>-<platform>.<ext>
+cue2_release:
+  version: "0.1.0"
+  tag: "v0.1.0"
+  page: "https://github.com/Tech-mop/Cue2/releases"

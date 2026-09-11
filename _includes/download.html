@@ -1,0 +1,50 @@
+{% assign release = site.cue2_release %}
+{% assign asset_base = "https://github.com/Tech-mop/Cue2/releases/download/" | append: release.tag %}
+{% assign file_base = "Cue2-" | append: release.version %}
+
+<section class="download" id="download" aria-label="Download Cue2">
+  <a class="download-btn" id="download-primary"
+     href="{{ asset_base }}/{{ file_base }}-windows-x86_64.zip"
+     data-platform="windows-x86_64">
+    <span class="download-label">Download Cue2 for Windows</span>
+    <span class="download-meta">{{ release.tag }} · x64 · zip</span>
+  </a>
+
+  <ul class="download-others" id="download-others">
+    <li hidden>
+      <a data-platform="windows-x86_64"
+         data-label="Download Cue2 for Windows"
+         data-meta="{{ release.tag }} · x64 · zip"
+         href="{{ asset_base }}/{{ file_base }}-windows-x86_64.zip">Windows x64</a>
+    </li>
+    <li>
+      <a data-platform="windows-arm64"
+         data-label="Download Cue2 for Windows"
+         data-meta="{{ release.tag }} · ARM64 · zip"
+         href="{{ asset_base }}/{{ file_base }}-windows-arm64.zip">Windows ARM64</a>
+    </li>
+    <li>
+      <a data-platform="macos-arm64"
+         data-label="Download Cue2 for macOS"
+         data-meta="{{ release.tag }} · Apple Silicon · zip"
+         href="{{ asset_base }}/{{ file_base }}-macos-arm64.zip">macOS (Apple Silicon)</a>
+    </li>
+    <li>
+      <a data-platform="linux-x86_64"
+         data-label="Download Cue2 for Linux"
+         data-meta="{{ release.tag }} · x64 · tar.gz"
+         href="{{ asset_base }}/{{ file_base }}-linux-x86_64.tar.gz">Linux x64</a>
+    </li>
+    <li>
+      <a data-platform="linux-arm64"
+         data-label="Download Cue2 for Linux"
+         data-meta="{{ release.tag }} · ARM64 · tar.gz"
+         href="{{ asset_base }}/{{ file_base }}-linux-arm64.tar.gz">Linux ARM64</a>
+    </li>
+  </ul>
+
+  <p class="download-releases">
+    <a href="{{ release.page }}">All releases on GitHub</a>
+  </p>
+</section>
+<script src="{{ '/assets/js/download.js' | relative_url }}"></script>
