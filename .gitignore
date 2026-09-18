@@ -2,6 +2,7 @@
 _site/
 .jekyll-cache/
 .jekyll-metadata
+tools/i18n/__pycache__/
 
 # Ruby
 .bundle/

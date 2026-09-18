@@ -1,0 +1,25 @@
+---
+layout: null
+permalink: /sitemap.xml
+lang-exclusive: ["en"]
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{% assign paths = "/,/about/" | split: "," %}
+{% for path in paths %}
+{% for lang in site.languages %}
+{% assign prefix = "" %}
+{% if lang != site.default_lang %}{% assign prefix = "/" | append: lang %}{% endif %}
+{% if path == "/" %}
+{% assign loc = site.url | append: prefix | append: "/" %}
+{% else %}
+{% assign loc = site.url | append: prefix | append: path %}
+{% endif %}
+  <url>
+    <loc>{{ loc }}</loc>
+    <changefreq>{% if path == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
+    <priority>{% if path == "/" %}1.0{% else %}0.6{% endif %}</priority>
+  </url>
+{% endfor %}
+{% endfor %}
+</urlset>

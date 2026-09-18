@@ -1,11 +1,67 @@
 title: "Cue2"
-description: "Welcome to Cue2.Live"
-url: "https://cue2.live"
+description: "Cue2 is free, open-source cue-based playback for live events. Run audio, video, text, OSC and MIDI from a cuelist on Windows, macOS and Linux."
+url: "https://www.cue2.live"
 baseurl: ""
+lang: "en"
+twitter:
+  card: summary_large_image
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/og-card.png
 
 # Build settings
 markdown: kramdown
 highlighter: rouge
+exclude:
+  - tools
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - ".ruby-version"
+plugins:
+  - jekyll-polyglot
+
+# Match Cue2 app locales (LocalizationService.SupportedLocales).
+languages: ["en", "mi", "es", "de", "ru", "ja", "ar", "hi"]
+default_lang: "en"
+exclude_from_localization:
+  - assets
+  - CNAME
+  - robots.txt
+  - sitemap.xml
+  - tools
+  - vendor
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+parallel_localization: false
+
+locale_names:
+  en: English
+  mi: Te reo Māori
+  es: Español
+  de: Deutsch
+  ru: Русский
+  ja: 日本語
+  ar: العربية
+  hi: हिन्दी
+
+locale_og:
+  en: en_US
+  mi: mi_NZ
+  es: es_ES
+  de: de_DE
+  ru: ru_RU
+  ja: ja_JP
+  ar: ar
+  hi: hi_IN
+
+rtl_languages: ["ar"]
 
 # Hardcoded latest release. Update version + tag when publishing a new GitHub release.
 # Asset filenames must stay: Cue2-<version>-<platform>.<ext>

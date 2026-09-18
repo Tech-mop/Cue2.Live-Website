@@ -1,0 +1,12 @@
+{%- for lang in site.languages -%}
+  {%- assign prefix = "" -%}
+  {%- if lang != site.default_lang -%}{%- assign prefix = "/" | append: lang -%}{%- endif -%}
+  {%- assign rest = page.url -%}
+  {%- if rest == "/index.html" or rest == "/" -%}
+    {%- assign href = site.url | append: prefix | append: "/" -%}
+  {%- else -%}
+    {%- assign href = site.url | append: prefix | append: rest -%}
+  {%- endif -%}
+<link rel="alternate" hreflang="{{ lang }}" href="{{ href }}">
+{%- endfor -%}
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ page.url | replace: '/index.html', '/' }}">

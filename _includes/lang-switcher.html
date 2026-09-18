@@ -1,0 +1,19 @@
+{%- assign current = site.active_lang | default: site.default_lang -%}
+<label class="lang-switch">
+  <span class="visually-hidden">{% t nav.language %}</span>
+  <select id="lang-switch" data-current="{{ current }}" data-default="{{ site.default_lang }}" aria-label="{% t nav.language %}">
+    {%- for lang in site.languages -%}
+      {%- assign prefix = "" -%}
+      {%- if lang != site.default_lang -%}{%- assign prefix = "/" | append: lang -%}{%- endif -%}
+      {%- assign rest = page.url -%}
+      {%- if rest == "/index.html" -%}{%- assign rest = "/" -%}{%- endif -%}
+      {%- if rest == "/" -%}
+        {%- assign href = prefix | append: "/" -%}
+      {%- else -%}
+        {%- assign href = prefix | append: rest -%}
+      {%- endif -%}
+      {%- if href == "" -%}{%- assign href = "/" -%}{%- endif -%}
+      <option value="{{ lang }}" data-href="{{ href }}" {% if lang == current %}selected{% endif %}>{{ site.locale_names[lang] }}</option>
+    {%- endfor -%}
+  </select>
+</label>

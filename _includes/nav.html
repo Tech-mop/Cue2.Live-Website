@@ -1,9 +1,12 @@
 <nav>
   <div class="container">
-    <a href="/" class="logo"><img src="/assets/img/Cue2Logo.svg" alt="Cue2 Logo"></a>
+    <a href="{% if site.active_lang == site.default_lang %}/{% else %}/{{ site.active_lang }}/{% endif %}" class="logo"><img src="{{ '/assets/img/Cue2Logo.svg' | relative_url }}" alt="Cue2"></a>
     <ul>
-      <li><a href="https://docs.cue2.live" target="_blank">Documentation</a></li>
-      <li><a href="https://github.com/Tech-mop/Cue2" target="_blank">GitHub</a></li>
+      <li><a href="{% if site.active_lang == site.default_lang %}/{% else %}/{{ site.active_lang }}/{% endif %}#download">{% t nav.download %}</a></li>
+      <li><a href="https://docs.cue2.live">{% t nav.documentation %}</a></li>
+      <li><a href="{% if site.active_lang == site.default_lang %}/about/{% else %}/{{ site.active_lang }}/about/{% endif %}">{% t nav.about %}</a></li>
+      <li><a href="https://github.com/Tech-mop/Cue2">{% t nav.github %}</a></li>
+      <li>{% include lang-switcher.html %}</li>
     </ul>
   </div>
 </nav>

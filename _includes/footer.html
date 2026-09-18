@@ -1,5 +1,11 @@
 <footer>
   <div class="container">
-    <p>&copy; 2025 Samuel Moxham. Website source code on <a href="https://github.com/Tech-mop/Cue2.Live-Website" target="_blank">GitHub</a>.</p>
+    <p>
+      <a href="{% if site.active_lang == site.default_lang %}/{% else %}/{{ site.active_lang }}/{% endif %}">{% t nav.home %}</a>
+      · <a href="{% if site.active_lang == site.default_lang %}/about/{% else %}/{{ site.active_lang }}/about/{% endif %}">{% t nav.about %}</a>
+      · <a href="https://docs.cue2.live">{% t nav.documentation %}</a>
+      · <a href="https://github.com/Tech-mop/Cue2">{% t nav.github %}</a>
+    </p>
+    <p>{% t footer.copyright_before %} <a href="https://github.com/Tech-mop/Cue2.Live-Website">GitHub</a>{% t footer.copyright_after %}</p>
   </div>
 </footer>

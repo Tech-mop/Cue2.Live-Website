@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+{% assign active = site.active_lang | default: site.default_lang | default: "en" %}
+{% assign is_rtl = false %}
+{% if site.rtl_languages contains active %}{% assign is_rtl = true %}{% endif %}
+<html lang="{{ active }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: site.title }}</title>
-    <link rel="icon" href="/assets/img/icon98.png">
+    {% if page.t_ns == "about" %}
+      {% capture page_title %}{% t about.title %}{% endcapture %}
+      {% capture page_description %}{% t about.description %}{% endcapture %}
+    {% else %}
+      {% capture page_title %}{% t home.title %}{% endcapture %}
+      {% capture page_description %}{% t home.description %}{% endcapture %}
+    {% endif %}
+    {% assign prefix = "" %}
+    {% if active != site.default_lang %}{% assign prefix = "/" | append: active %}{% endif %}
+    {% assign rest = page.url %}
+    {% if rest == "/index.html" %}{% assign rest = "/" %}{% endif %}
+    {% if rest == "/" %}
+      {% assign canonical = site.url | append: prefix | append: "/" %}
+    {% else %}
+      {% assign canonical = site.url | append: prefix | append: rest %}
+    {% endif %}
+    {% assign og_image = page.image | default: '/assets/img/og-card.png' | absolute_url %}
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    <link rel="canonical" href="{{ canonical }}">
+    {% include hreflang.html %}
+    <link rel="icon" href="{{ '/assets/img/icon98.png' | relative_url }}">
+    <link rel="apple-touch-icon" href="{{ '/assets/img/icon98.png' | relative_url }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Cue2">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ page_description }}">
+    <meta property="og:url" content="{{ canonical }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="{{ site.locale_og[active] }}">
+    {% for lang in site.languages %}
+      {% if lang != active %}
+    <meta property="og:locale:alternate" content="{{ site.locale_og[lang] }}">
+      {% endif %}
+    {% endfor %}
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title }}">
+    <meta name="twitter:description" content="{{ page_description }}">
+    <meta name="twitter:image" content="{{ og_image }}">
+
+    {% if page.url == '/' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Cue2",
+      "inLanguage": "{{ active }}",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Windows 10, macOS, Linux",
+      "url": {{ canonical | jsonify }},
+      "downloadUrl": {{ canonical | append: "#download" | jsonify }},
+      "softwareVersion": "{{ site.cue2_release.version }}",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@type": "Person",
+        "name": "Samuel Moxham"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": {{ page_description | jsonify }}
+    }
+    </script>
+    {% endif %}
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
@@ -12,5 +84,6 @@
     {% include nav.html %}
     {{ content }}
     {% include footer.html %}
+    <script src="{{ '/assets/js/i18n.js' | relative_url }}"></script>
 </body>
 </html>
