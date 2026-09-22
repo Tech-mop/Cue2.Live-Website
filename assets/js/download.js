@@ -90,12 +90,6 @@
     }
     if (!match) return;
 
-    var currentId = primary.getAttribute("data-platform");
-    if (currentId === id) {
-      setHidden(links, id);
-      return;
-    }
-
     primary.href = match.href;
     primary.setAttribute("data-platform", id);
     primary.querySelector(".download-label").textContent = match.getAttribute("data-label");
@@ -110,9 +104,64 @@
     }
   }
 
+  var ASSET_SUFFIX = {
+    "windows-x86_64": /-windows-x86_64\.zip$/i,
+    "windows-arm64": /-windows-arm64\.zip$/i,
+    "macos-arm64": /-macos-arm64\.zip$/i,
+    "linux-x86_64": /-linux-x86_64\.tar\.gz$/i,
+    "linux-arm64": /-linux-arm64\.tar\.gz$/i
+  };
+  var RELEASE_PREFIX = "https://github.com/Tech-mop/Cue2/releases/download/";
+
+  function assetUrl(assets, id) {
+    var pattern = ASSET_SUFFIX[id];
+    if (!pattern) return null;
+    for (var i = 0; i < assets.length; i++) {
+      var asset = assets[i];
+      if (!asset || !pattern.test(asset.name || "")) continue;
+      var url = asset.browser_download_url || "";
+      if (url.indexOf(RELEASE_PREFIX) === 0) return url;
+    }
+    return null;
+  }
+
+  // Baked-in links are the release resolved at build time. This moves every
+  // button onto the current latest release without waiting for a site rebuild.
+  function applyLatestRelease(release) {
+    if (!release || !release.tag_name || !release.assets) return;
+    var tag = String(release.tag_name);
+    var links = document.querySelectorAll("#download-others [data-platform]");
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var url = assetUrl(release.assets, link.getAttribute("data-platform"));
+      if (!url) continue;
+      link.href = url;
+      var detail = link.getAttribute("data-detail");
+      if (detail) link.setAttribute("data-meta", tag + " · " + detail);
+    }
+    var primary = document.getElementById("download-primary");
+    var current = primary && primary.getAttribute("data-platform");
+    selectPlatform(current || detectPlatform());
+  }
+
+  function refreshLatest() {
+    var root = document.getElementById("download");
+    if (!root || !window.fetch) return;
+    var api = root.getAttribute("data-release-api");
+    if (!api) return;
+    window.fetch(api, { headers: { Accept: "application/vnd.github+json" } })
+      .then(function (res) {
+        if (!res.ok) throw new Error(String(res.status));
+        return res.json();
+      })
+      .then(applyLatestRelease)
+      .catch(function () {});
+  }
+
   var detected = detectPlatform();
   selectPlatform(detected);
 
   var os = detected.split("-")[0];
   applyHighEntropyArch(os, function () {});
+  refreshLatest();
 })();

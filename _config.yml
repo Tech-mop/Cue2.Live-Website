@@ -63,9 +63,11 @@ locale_og:
 
 rtl_languages: ["ar"]
 
-# Hardcoded latest release. Update version + tag when publishing a new GitHub release.
-# Asset filenames must stay: Cue2-<version>-<platform>.<ext>
+# Fallback when the GitHub API is unreachable at build time.
+# _plugins/cue2_release.rb replaces this with the latest non-prerelease release.
+# Download buttons also refresh in the browser, so a new release shows up
+# before the next site build. Asset names are matched by platform suffix.
 cue2_release:
-  version: "0.1.0"
-  tag: "v0.1.0"
+  version: "0.1.1"
+  tag: "v0.1.1"
   page: "https://github.com/Tech-mop/Cue2/releases"

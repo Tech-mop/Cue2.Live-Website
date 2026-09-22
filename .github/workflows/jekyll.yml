@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  # Rebuild daily so the baked-in download links follow a new Cue2 release
+  # even when this repo has not changed. The page also updates in the browser.
+  schedule:
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -33,6 +37,8 @@ jobs:
 
       - name: Build site
         run: bundle exec jekyll build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
