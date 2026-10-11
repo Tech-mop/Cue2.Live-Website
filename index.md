@@ -5,11 +5,15 @@ permalink: /
 ---
 
 <div class="hero-text">
+    <p class="hero-badge">{% t home.hero_badge %}</p>
     <h1>{% t home.hero_h1 %}</h1>
     <p class="lede">{% t home.hero_lede %}</p>
 </div>
 <header>
-    <img src="{{ '/assets/img/Cue2v0.1_Window.PNG' | relative_url }}" alt="{% t home.screenshot_alt %}" width="800" height="526">
+    <img src="{{ '/assets/img/cue2-window.webp' | relative_url }}"
+         srcset="{{ '/assets/img/cue2-window-1024.webp' | relative_url }} 1024w, {{ '/assets/img/cue2-window.webp' | relative_url }} 1441w"
+         sizes="(max-width: 840px) calc(100vw - 40px), 800px"
+         alt="{% t home.screenshot_alt %}" width="800" height="526" fetchpriority="high">
 </header>
 {% include download.html %}
 
@@ -50,7 +54,6 @@ permalink: /
 
     <h2>{% t home.who_h2 %}</h2>
     <p>{% t home.who_p1 %}</p>
-    <p>{% t home.who_p2 %}</p>
 
     <h2>{% t home.start_h2 %}</h2>
     <ol class="start-list">

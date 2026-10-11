@@ -5,21 +5,25 @@ lang-exclusive: ["en"]
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-{% assign paths = "/,/about/" | split: "," %}
-{% for path in paths %}
-{% for lang in site.languages %}
-{% assign prefix = "" %}
-{% if lang != site.default_lang %}{% assign prefix = "/" | append: lang %}{% endif %}
-{% if path == "/" %}
-{% assign loc = site.url | append: prefix | append: "/" %}
-{% else %}
-{% assign loc = site.url | append: prefix | append: path %}
-{% endif %}
+{%- assign paths = "/,/about/" | split: "," -%}
+{%- for path in paths -%}
+{%- for lang in site.languages -%}
+{%- assign prefix = "" -%}
+{%- if lang != site.default_lang -%}{%- assign prefix = "/" | append: lang -%}{%- endif %}
   <url>
-    <loc>{{ loc }}</loc>
+    <loc>{{ site.url }}{{ prefix }}{{ path }}</loc>
+    {%- if site.page_lastmod[path] %}
+    <lastmod>{{ site.page_lastmod[path] }}</lastmod>
+    {%- endif %}
     <changefreq>{% if path == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if path == "/" %}1.0{% else %}0.6{% endif %}</priority>
+    {%- for alt in site.languages -%}
+    {%- assign alt_prefix = "" -%}
+    {%- if alt != site.default_lang -%}{%- assign alt_prefix = "/" | append: alt -%}{%- endif %}
+    <xhtml:link rel="alternate" hreflang="{{ alt }}" href="{{ site.url }}{{ alt_prefix }}{{ path }}"/>
+    {%- endfor %}
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ path }}"/>
   </url>
-{% endfor %}
-{% endfor %}
+{%- endfor -%}
+{%- endfor %}
 </urlset>

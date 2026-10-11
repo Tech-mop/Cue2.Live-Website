@@ -71,6 +71,10 @@ bundle exec jekyll build
 
 The built site will be in the `_site` directory.
 
+### Social preview card
+
+`assets/img/og-card.png` is generated from `tools/og-card/og-card.html`. See [tools/og-card/README.md](tools/og-card/README.md).
+
 ## Deployment
 
 The site is automatically built and deployed to GitHub Pages on push to the `main` branch via GitHub Actions.

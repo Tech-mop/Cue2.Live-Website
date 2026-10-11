@@ -47,11 +47,14 @@ IDENTITY = (
     "MIT",
     "Windows",
     "macOS",
+    "Apple Silicon",
     "Linux",
     "StripyHat",
     "RtMidi",
     "LGPLv2.1",
     "docs.cue2.live",
+    "@smxham",
+    "{release}",
 )
 
 

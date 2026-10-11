@@ -39,9 +39,12 @@ module Cue2Release
     tag = payload["tag_name"].to_s
     raise "latest release response did not include a tag" if tag.empty?
 
+    version = tag.sub(/\Av/, "")
     {
-      "version" => tag.sub(/\Av/, ""),
+      "version" => version,
       "tag" => tag,
+      "codename" => codename_from(payload["name"], version),
+      "published_at" => payload["published_at"].to_s,
       "page" => PAGE,
       "source" => "GitHub latest release",
       "github_assets" => Array(payload["assets"])
@@ -69,10 +72,20 @@ module Cue2Release
     {
       "version" => version,
       "tag" => tag,
+      "codename" => config["codename"].to_s,
+      "published_at" => config["published_at"].to_s,
       "page" => page,
       "source" => "_config.yml fallback",
       "github_assets" => []
     }
+  end
+
+  # "Cue2 0.1.1 StripyHat" -> "StripyHat". Empty when the name has no codename.
+  def codename_from(name, version)
+    name.to_s
+        .sub(/\A\s*Cue-?2\b/i, "")
+        .sub(/\bv?#{Regexp.escape(version)}\b/, "")
+        .strip
   end
 
   def assets_for(release)

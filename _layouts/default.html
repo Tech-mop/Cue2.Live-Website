@@ -2,13 +2,16 @@
 {% assign active = site.active_lang | default: site.default_lang | default: "en" %}
 {% assign is_rtl = false %}
 {% if site.rtl_languages contains active %}{% assign is_rtl = true %}{% endif %}
-<html lang="{{ active }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
+<html lang="{{ active }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}"{% if page.noindex %} data-no-lang-redirect{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if page.t_ns == "about" %}
       {% capture page_title %}{% t about.title %}{% endcapture %}
       {% capture page_description %}{% t about.description %}{% endcapture %}
+    {% elsif page.t_ns == "notfound" %}
+      {% capture page_title %}{% t notfound.title %} · Cue2{% endcapture %}
+      {% capture page_description %}{% t notfound.description %}{% endcapture %}
     {% else %}
       {% capture page_title %}{% t home.title %}{% endcapture %}
       {% capture page_description %}{% t home.description %}{% endcapture %}
@@ -24,16 +27,22 @@
     {% endif %}
     {% assign og_image = page.image | default: '/assets/img/og-card.png' | absolute_url %}
     <title>{{ page_title }}</title>
-    <meta name="description" content="{{ page_description }}">
+    <meta name="description" content="{{ page_description | strip_html }}">
+    {% if page.noindex %}
+    <meta name="robots" content="noindex">
+    {% else %}
     <link rel="canonical" href="{{ canonical }}">
     {% include hreflang.html %}
-    <link rel="icon" href="{{ '/assets/img/icon98.png' | relative_url }}">
-    <link rel="apple-touch-icon" href="{{ '/assets/img/icon98.png' | relative_url }}">
+    {% endif %}
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="{{ '/assets/img/icon-192.png' | relative_url }}" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#1b1b1d">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Cue2">
     <meta property="og:title" content="{{ page_title }}">
-    <meta property="og:description" content="{{ page_description }}">
+    <meta property="og:description" content="{{ page_description | strip_html }}">
     <meta property="og:url" content="{{ canonical }}">
     <meta property="og:image" content="{{ og_image }}">
     <meta property="og:image:width" content="1200">
@@ -47,7 +56,8 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ page_title }}">
-    <meta name="twitter:description" content="{{ page_description }}">
+    <meta name="twitter:description" content="{{ page_description | strip_html }}">
+    <meta name="twitter:creator" content="@{{ site.x_handle }}">
     <meta name="twitter:image" content="{{ og_image }}">
 
     {% if page.url == '/' %}
@@ -58,7 +68,7 @@
       "name": "Cue2",
       "inLanguage": "{{ active }}",
       "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "Windows 10, macOS, Linux",
+      "operatingSystem": "Windows 10 or later, macOS (Apple Silicon), Linux",
       "url": {{ canonical | jsonify }},
       "downloadUrl": {{ canonical | append: "#download" | jsonify }},
       "softwareVersion": "{{ site.cue2_release.version }}",
@@ -77,6 +87,8 @@
     </script>
     {% endif %}
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>

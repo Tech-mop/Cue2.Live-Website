@@ -25,6 +25,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so _plugins/last_modified.rb can date sitemap entries.
+          fetch-depth: 0
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

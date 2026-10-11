@@ -63,6 +63,8 @@
   }
 
   if (isBot()) return;
+  // The 404 page localizes itself from the URL; redirecting it would only find another 404.
+  if (document.documentElement.hasAttribute("data-no-lang-redirect")) return;
 
   var current = currentLang();
   var stored = null;

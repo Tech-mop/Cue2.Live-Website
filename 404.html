@@ -1,0 +1,55 @@
+---
+layout: default
+t_ns: notfound
+permalink: /404.html
+lang-exclusive: ["en"]
+noindex: true
+---
+{%- comment -%}
+GitHub Pages serves this one file for every missing URL, including /es/..., /ja/... and so on.
+It is built once (English) and switches its text to the language in the URL prefix
+using the strings embedded below.
+{%- endcomment -%}
+<div class="page notfound" id="notfound">
+    <h1 data-nf="title">{% t notfound.title %}</h1>
+    <p data-nf="description">{% t notfound.description %}</p>
+    <ul class="notfound-links">
+        <li><a data-nf="home" data-nf-href="/" href="/">{% t nav.home %}</a></li>
+        <li><a data-nf="download" data-nf-href="/#download" href="/#download">{% t nav.download %}</a></li>
+        <li><a data-nf="documentation" href="https://docs.cue2.live">{% t nav.documentation %}</a></li>
+    </ul>
+</div>
+<script type="application/json" id="notfound-i18n">
+{
+{%- for lang in site.languages -%}
+  {%- assign d = site.data.i18n[lang] -%}
+  {{ lang | jsonify }}: {
+    "title": {{ d.notfound.title | jsonify }},
+    "description": {{ d.notfound.description | jsonify }},
+    "home": {{ d.nav.home | jsonify }},
+    "download": {{ d.nav.download | jsonify }},
+    "documentation": {{ d.nav.documentation | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{%- endfor %}
+}
+</script>
+<script>
+(function () {
+  var lang = (location.pathname.split("/")[1] || "").toLowerCase();
+  var rtl = {{ site.rtl_languages | jsonify }};
+  var data;
+  try { data = JSON.parse(document.getElementById("notfound-i18n").textContent); } catch (e) { return; }
+  if (!data[lang] || lang === {{ site.default_lang | jsonify }}) return;
+  var t = data[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = rtl.indexOf(lang) !== -1 ? "rtl" : "ltr";
+  document.title = t.title + " · Cue2";
+  var nodes = document.querySelectorAll("#notfound [data-nf]");
+  for (var i = 0; i < nodes.length; i++) {
+    var key = nodes[i].getAttribute("data-nf");
+    if (t[key]) nodes[i].textContent = t[key];
+    var href = nodes[i].getAttribute("data-nf-href");
+    if (href) nodes[i].setAttribute("href", "/" + lang + href);
+  }
+})();
+</script>

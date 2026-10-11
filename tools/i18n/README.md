@@ -36,7 +36,11 @@ Do not put user-facing sentences in the Markdown if they need translating. Add a
 
 `--machine` and a normal run **never overwrite** a translation whose English hash still matches. They only fill missing keys, or stale keys when English for that key changed.
 
-Leave product names and protocols in English: Cue2, FFmpeg, SDL3, OSC, MIDI, GO, GitHub, MIT, Windows, macOS, Linux, StripyHat.
+Leave product names and protocols in English: Cue2, FFmpeg, SDL3, OSC, MIDI, GO, GitHub, MIT, Windows, macOS, Apple Silicon, Linux, StripyHat, @smxham.
+
+Release placeholders: write `{release}` (e.g. "0.1.1 StripyHat"), `{version}` (0.1.1) or `{tag}` (v0.1.1)
+instead of a hard-coded version. `_plugins/t.rb` fills them from the latest GitHub release at build time,
+so the copy never goes stale. Keep the placeholder unchanged in every locale.
 
 Te reo Māori should get a native review.
 

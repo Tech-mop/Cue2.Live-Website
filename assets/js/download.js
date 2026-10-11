@@ -7,16 +7,37 @@
     "linux-arm64"
   ];
 
+  // Phones and tablets cannot run Cue2. Instead of guessing a desktop build,
+  // show a note and leave every platform link visible (to share or save for later).
+  function isMobile() {
+    var ua = navigator.userAgent || "";
+    if (navigator.userAgentData && navigator.userAgentData.mobile) return true;
+    if (/Android|iPhone|iPad|iPod|Mobile/i.test(ua)) return true;
+    // iPadOS reports a desktop Mac user agent; touch support gives it away.
+    return /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1;
+  }
+
+  var MOBILE = isMobile();
+
+  function showMobile() {
+    var root = document.getElementById("download");
+    var primary = document.getElementById("download-primary");
+    var note = document.getElementById("download-mobile-note");
+    var others = document.getElementById("download-others");
+    if (!root || !primary || !note || !others) return;
+    root.classList.add("is-mobile");
+    primary.hidden = true;
+    note.hidden = false;
+    var items = others.querySelectorAll("li");
+    for (var i = 0; i < items.length; i++) items[i].hidden = false;
+  }
+
   function detectPlatform() {
     var ua = navigator.userAgent || "";
     var platform = navigator.platform || "";
     var uaData = navigator.userAgentData;
     var os = "windows";
     var arch = "x86_64";
-
-    if (/Android|iPhone|iPad|iPod/i.test(ua)) {
-      return "windows-x86_64";
-    }
 
     if (uaData && uaData.platform) {
       var p = uaData.platform.toLowerCase();
@@ -76,6 +97,7 @@
   }
 
   function selectPlatform(id) {
+    if (MOBILE) return;
     var primary = document.getElementById("download-primary");
     var others = document.getElementById("download-others");
     if (!primary || !others) return;
@@ -158,10 +180,12 @@
       .catch(function () {});
   }
 
-  var detected = detectPlatform();
-  selectPlatform(detected);
-
-  var os = detected.split("-")[0];
-  applyHighEntropyArch(os, function () {});
+  if (MOBILE) {
+    showMobile();
+  } else {
+    var detected = detectPlatform();
+    selectPlatform(detected);
+    applyHighEntropyArch(detected.split("-")[0], function () {});
+  }
   refreshLatest();
 })();
